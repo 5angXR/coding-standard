@@ -15,6 +15,7 @@ BreakStringLiterals: true
 
 # Braces and Blocks
 BreakBeforeBraces: Linux
+Cpp11BracedListStyle: false
 AllowShortBlocksOnASingleLine: Empty
 AllowShortFunctionsOnASingleLine: Empty
 AllowShortIfStatementsOnASingleLine: Never
