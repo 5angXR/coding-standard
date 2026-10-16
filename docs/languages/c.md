@@ -129,7 +129,7 @@
 
 ## 11. 自动化工具链配置
 
-- **格式化**: 采用统一的 `.clang-format`(基于 LLVM 风格, 缩进 4 格空格, 行宽 100/120 字符). 可通过项目私有的 `.clang-format.override` 进行微调.
+- **格式化**: 采用统一的 `.clang-format`(基于 LLVM/Linux 大括号风格, 缩进 4 格空格, 行宽 100 字符, 指针靠右 `PointerAlignment: Right`, 参数换行独立成行). 可通过项目私有的 `.clang-format.override` 进行微调.
 - **静态分析候选**:
   - `clang-tidy`: 检测潜在空指针解引用, 未初始化变量, 类型转换问题.
   - `cppcheck`: 专用于检测 C 内存泄露, 越界访问及未定义行为.

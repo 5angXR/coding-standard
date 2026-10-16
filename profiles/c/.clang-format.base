@@ -8,28 +8,76 @@ Language: Cpp
 IndentWidth: 4
 TabWidth: 4
 UseTab: Never
+ContinuationIndentWidth: 4
 ColumnLimit: 100
+ReflowComments: true
+BreakStringLiterals: true
 
 # Braces and Blocks
-BreakBeforeBraces: Attach
-AllowShortBlocksOnASingleLine: Never
-AllowShortCaseLabelsOnASingleLine: false
-AllowShortFunctionsOnASingleLine: None
+BreakBeforeBraces: Linux
+AllowShortBlocksOnASingleLine: Empty
+AllowShortFunctionsOnASingleLine: Empty
 AllowShortIfStatementsOnASingleLine: Never
 AllowShortLoopsOnASingleLine: false
+AllowShortCaseLabelsOnASingleLine: true
 
-# Alignment and Spacing
+# Alignment
 PointerAlignment: Right
 ReferenceAlignment: Right
+DerivePointerAlignment: false
 AlignAfterOpenBracket: Align
-AlignConsecutiveAssignments: None
-AlignConsecutiveDeclarations: None
+AlignOperands: AlignAfterOperator
 AlignTrailingComments: true
+AlignConsecutiveDeclarations: None
+AlignConsecutiveAssignments: None
+AlignConsecutiveMacros: Consecutive
+AlignEscapedNewlines: Right
+
+# Function Declarations and Arguments
+AlwaysBreakAfterReturnType: None
+AlwaysBreakAfterDefinitionReturnType: None
+AllowAllParametersOfDeclarationOnNextLine: false
+AllowAllArgumentsOnNextLine: false
+BinPackParameters: false
+BinPackArguments: false
+
+# Operators and Labels
+BreakBeforeBinaryOperators: None
+BreakBeforeTernaryOperators: false
+IndentCaseLabels: true
+IndentGotoLabels: true
+
+# Spacing
 SpaceAfterCStyleCast: false
+SpaceBeforeAssignmentOperators: true
 SpaceBeforeParens: ControlStatements
+SpacesInParentheses: false
+SpacesInSquareBrackets: false
+SpacesInCStyleCastParentheses: false
+SpaceInEmptyParentheses: false
 SpacesBeforeTrailingComments: 2
+SpaceAfterLogicalNot: false
+SpaceBeforeSquareBrackets: false
+
+# Preprocessor Directives
+IndentPPDirectives: BeforeHash
 
 # Includes
 SortIncludes: CaseSensitive
-IncludeBlocks: Preserve
+IncludeBlocks: Regroup
+
+# Break Penalties
+PenaltyBreakAssignment: 900
+PenaltyBreakBeforeFirstCallParameter: 800
+PenaltyBreakComment: 300
+PenaltyExcessCharacter: 50
+PenaltyIndentedWhitespace: 0
+PenaltyBreakOpenParenthesis: 100
+PenaltyReturnTypeOnItsOwnLine: 1000
+
+# Whitespace and Blank Lines
+KeepEmptyLinesAtTheStartOfBlocks: false
+MaxEmptyLinesToKeep: 2
+CompactNamespaces: false
+FixNamespaceComments: false
 ...
