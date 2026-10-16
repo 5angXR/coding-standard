@@ -1,0 +1,12 @@
+stages:
+  - test
+
+check-coding-standard:
+  stage: test
+  image: python:3.12-slim
+  script:
+    - git clone --depth 1 https://gitee.com/wangxuran/coding-standard.git /tmp/coding-standard
+    - python3 /tmp/coding-standard/scripts/check.py --target .
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+    - if: '$CI_COMMIT_BRANCH == "main"'

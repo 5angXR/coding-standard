@@ -1,0 +1,7 @@
+# Project Ruff configuration extending the coding-standard base
+extend = "ruff.base.toml"
+
+# Add project-specific rules or overrides below if needed:
+# line-length = 120
+# [lint]
+# extend-ignore = []

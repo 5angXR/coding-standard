@@ -1,0 +1,35 @@
+name: Coding Standard & Code Quality CI
+
+on:
+  push:
+    branches: [ "main", "master", "develop" ]
+  pull_request:
+    branches: [ "main", "master" ]
+
+jobs:
+  check-standard:
+    name: Verify Coding Standard Configuration
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Project
+        uses: actions/checkout@v4
+
+      - name: Checkout Coding Standard Repo
+        uses: actions/checkout@v4
+        with:
+          repository: 'wangxuran/coding-standard'
+          path: '.coding-standard-repo'
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Verify Standard Configuration Integrity
+        run: |
+          python3 .coding-standard-repo/scripts/check.py --target .
+
+  # Language specific linters can be run as separate jobs:
+  # - Clang-Format check: clang-format --dry-run --Werror src/*.c
+  # - Rustfmt / Clippy: cargo fmt --check && cargo clippy -- -D warnings
+  # - Python Ruff: ruff check . && ruff format --check .
