@@ -94,6 +94,7 @@
 
 - **C-LIF-01 [MUST]**: 模块级资源应具备成对的生命周期管理函数, 命名统一规范, 例如 `module_init(...)` 和 `module_deinit(...)`.
 - **C-LIF-02 [MUST]**: 动态分配的内存或句柄, 释放后必须立即将指针置为 `NULL`, 防止悬挂指针(Dangling Pointer)与二次释放(Double Free).
+- **C-LIF-03 [SHOULD]**: 结构体、联合体及数组的多行初始化列表, 最后一项推荐保留尾随逗号(Trailing Comma). 既能减少未来增删字段时的 Git diff 冲突, 也能引导格式化工具以清晰规整的块级结构换行与缩进.
 
 ---
 

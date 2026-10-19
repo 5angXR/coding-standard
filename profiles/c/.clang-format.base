@@ -26,7 +26,7 @@ AllowShortCaseLabelsOnASingleLine: true
 PointerAlignment: Right
 ReferenceAlignment: Right
 DerivePointerAlignment: false
-AlignAfterOpenBracket: Align
+AlignAfterOpenBracket: BlockIndent
 AlignOperands: AlignAfterOperator
 AlignTrailingComments: true
 AlignConsecutiveDeclarations: None
@@ -61,7 +61,7 @@ SpaceAfterLogicalNot: false
 SpaceBeforeSquareBrackets: false
 
 # Preprocessor Directives
-IndentPPDirectives: BeforeHash
+IndentPPDirectives: None
 
 # Includes
 SortIncludes: CaseSensitive
