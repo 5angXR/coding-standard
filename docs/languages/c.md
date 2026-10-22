@@ -9,10 +9,10 @@
 | 类别 | 规则 | 示例 | 说明 |
 | :--- | :--- | :--- | :--- |
 | **类型定义** | `PascalCase` | `QueueContext`, `HalUartDevice` | `typedef struct` 或 `typedef enum` |
-| **函数命名** | `snake_case` | `uart_transmit_bytes()`, `queue_pop()` | 推荐以 `模块名_动词_对象` 形式前缀 |
-| **变量命名** | `snake_case` | `buffer_len`, `retry_count` | 含义清晰, 禁止无意义缩写 |
-| **常量与宏** | `UPPER_SNAKE_CASE` | `MAX_RETRY_COUNT`, `UART_BAUD_115200` | 宏与枚举常量 |
-| **私有静态** | `snake_case` (前缀可加 `prv_` 或模块名) | `static int parse_header(...)` | 仅在当前编译单元可见的函数/变量必须用 `static` |
+| **函数命名** | `snake_case` | `uart_tx_bytes()`, `btn_evt_init()` | 推荐以 `模块名_动词_对象` 形式前缀, 常见词采用标准缩写 |
+| **变量命名** | `snake_case` | `buf_len`, `retry_cnt`, `btn_evt` | 常见词使用标准缩写(如 `btn`, `cnt`, `evt`), 禁止无意义自创缩写 |
+| **常量与宏** | `UPPER_SNAKE_CASE` | `MAX_RETRY_CNT`, `UART_BAUD_115200` | 宏与枚举常量 |
+| **私有静态** | `snake_case` (前缀可加 `prv_` 或模块名) | `static int parse_hdr(...)` | 仅在当前编译单元可见的函数/变量必须用 `static` |
 
 ---
 

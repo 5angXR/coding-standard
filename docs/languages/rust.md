@@ -11,8 +11,8 @@
 | **包名 / Crate** | `snake_case` (禁止使用减号 `-` 与下划线混用) | `firmware_maker`, `protocol_parser` |
 | **模块 / Module** | `snake_case` | `mod packet_builder;` |
 | **类型 / Struct / Enum / Trait** | `PascalCase` | `DeviceState`, `FlashBlock`, `DisplayDriver` |
-| **函数 / 方法** | `snake_case` | `calculate_crc()`, `into_bytes()` |
-| **局部变量 / 结构体字段** | `snake_case` | `chunk_size`, `device_id` |
+| **函数 / 方法** | `snake_case` | `calc_crc()`, `into_bytes()` |
+| **局部变量 / 结构体字段** | `snake_case` | `chunk_size`, `dev_id`, `evt_cnt` |
 | **常量 / 静态变量** | `UPPER_SNAKE_CASE` | `MAX_PAYLOAD_SIZE`, `DEFAULT_TIMEOUT_MS` |
 | **类型参数 / 泛型** | 单个大写字母或简短 `PascalCase` | `T`, `E`, `Item`, `Buf: AsRef<[u8]>` |
 

@@ -10,8 +10,8 @@
 | :--- | :--- | :--- | :--- |
 | **模块 / 包名** | `snake_case` (短小简明, 不含大写或短横线) | `data_cleaner`, `utils` | 保持简短易懂 |
 | **类名 (Class)** | `PascalCase` | `ConfigParser`, `HttpRequestHandler` | 异常类通常以 `Error` 结尾 |
-| **函数与方法** | `snake_case` | `parse_arguments()`, `calculate_hash()` | 动词或动宾结构 |
-| **局部与实例变量** | `snake_case` | `total_count`, `retry_delay` | 避免使用易混淆字符 |
+| **函数与方法** | `snake_case` | `parse_args()`, `calc_hash()` | 动词或动宾结构, 常见词采用标准缩写 |
+| **局部与实例变量** | `snake_case` | `total_cnt`, `btn_evt`, `retry_delay` | 常见词使用标准缩写(如 `cnt`, `btn`, `evt`), 避免易混淆字符 |
 | **受保护成员** | 单下划线前缀 `_snake_case` | `_internal_cache`, `_prepare()` | 模块内部或类内部使用 |
 | **私有混淆成员** | 双下划线前缀 `__snake_case` (审慎使用) | `__mangled_var` | 仅在避免子类命名冲突时使用 |
 | **全局常量** | `UPPER_SNAKE_CASE` | `DEFAULT_TIMEOUT`, `MAX_RETRIES` | 模块级常量 |
