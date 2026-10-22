@@ -34,6 +34,11 @@ PROFILE_SPECS: dict[str, list[ProfileFileSpec]] = {
             target_rel_path=".editorconfig",
             is_base=False,
         ),
+        ProfileFileSpec(
+            src_rel_path="_typos.toml",
+            target_rel_path="_typos.toml",
+            is_base=False,
+        ),
     ],
     "c": [
         ProfileFileSpec(

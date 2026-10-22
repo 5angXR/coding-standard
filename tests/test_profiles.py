@@ -34,6 +34,7 @@ class TestProfiles(unittest.TestCase):
 
         common_files = get_profile_files("common")
         self.assertTrue(any(f.src_rel_path == ".editorconfig" for f in common_files))
+        self.assertTrue(any(f.src_rel_path == "_typos.toml" for f in common_files))
 
 
 if __name__ == "__main__":
