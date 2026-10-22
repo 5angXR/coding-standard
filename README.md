@@ -100,6 +100,12 @@ sha256 = "17e57c6b..."
 is_base = false
 
 [[files]]
+path = "_typos.toml"
+profile = "common"
+sha256 = "8f3b92a1..."
+is_base = false
+
+[[files]]
 path = ".clang-format.base"
 profile = "c"
 sha256 = "ec6a8bfb..."
