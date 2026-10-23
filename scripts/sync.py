@@ -12,7 +12,12 @@ from pathlib import Path
 REPO_ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(REPO_ROOT))
 
-from scripts.lib.compiler import compile_clang_format, compile_ruff, compile_rustfmt
+from scripts.lib.compiler import (
+    compile_ast_grep_rules,
+    compile_clang_format,
+    compile_ruff,
+    compile_rustfmt,
+)
 from scripts.lib.manifest import (
     ManagedFile,
     compute_sha256,
@@ -126,6 +131,12 @@ def sync_project(target_dir: Path, force: bool = False) -> int:
                 elif profile == "python":
                     default_ruff = profiles_dir / "python" / "ruff.toml"
                     compile_ruff(dest_file, default_ruff, target_dir)
+                elif profile == "common":
+                    compiled_file = target_dir / spec.compiled_filename
+                    override_file = target_dir / spec.override_filename if spec.override_filename else None
+                    active_langs = [p for p in manifest.profiles if p in ("c", "rust", "python")]
+                    compile_ast_grep_rules(dest_file, override_file, compiled_file, languages=active_langs or None)
+                    updated_files.append(f"{spec.compiled_filename} (recompiled)")
 
     # Refresh manifest version and timestamp
     manifest.version = current_version

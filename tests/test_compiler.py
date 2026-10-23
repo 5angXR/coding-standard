@@ -5,6 +5,7 @@ import unittest
 from pathlib import Path
 
 from scripts.lib.compiler import (
+    compile_ast_grep_rules,
     compile_clang_format,
     compile_ruff,
     compile_rustfmt,
@@ -77,6 +78,48 @@ class TestCompiler(unittest.TestCase):
         target_ruff.write_text('extend = "ruff.base.toml"\nline-length = 110\n', encoding="utf-8")
         compile_ruff(base_file, default_ruff, self.work_dir)
         self.assertIn("line-length = 110", target_ruff.read_text(encoding="utf-8"))
+
+    def test_compile_ast_grep_rules_without_override(self):
+        base_file = self.work_dir / "abbreviations.base.toml"
+        base_file.write_text('button = "btn"\ncount = "cnt"\n', encoding="utf-8")
+        out_file = self.work_dir / ".ast-grep-rules" / "naming.yml"
+
+        compile_ast_grep_rules(base_file, None, out_file)
+        self.assertTrue(out_file.exists())
+        content = out_file.read_text(encoding="utf-8")
+        self.assertIn("id: c-naming-button", content)
+        self.assertIn("id: rust-naming-button", content)
+        self.assertIn("id: python-naming-button", content)
+        self.assertIn("建议缩写为 'btn'", content)
+        self.assertIn("建议缩写为 'cnt'", content)
+
+    def test_compile_ast_grep_rules_with_override(self):
+        base_file = self.work_dir / "abbreviations.base.toml"
+        base_file.write_text('button = "btn"\ncount = "cnt"\n', encoding="utf-8")
+        override_file = self.work_dir / "abbreviations.override.toml"
+        override_file.write_text('packet = "pkt"\nbutton = ""\n', encoding="utf-8")
+        out_file = self.work_dir / ".ast-grep-rules" / "naming.yml"
+
+        compile_ast_grep_rules(base_file, override_file, out_file)
+        content = out_file.read_text(encoding="utf-8")
+        # packet added
+        self.assertIn("c-naming-packet", content)
+        self.assertIn("建议缩写为 'pkt'", content)
+        # button removed
+        self.assertNotIn("c-naming-button", content)
+        # count retained
+        self.assertIn("c-naming-count", content)
+
+    def test_compile_ast_grep_rules_with_languages_filter(self):
+        base_file = self.work_dir / "abbreviations.base.toml"
+        base_file.write_text('button = "btn"\n', encoding="utf-8")
+        out_file = self.work_dir / ".ast-grep-rules" / "naming.yml"
+
+        compile_ast_grep_rules(base_file, None, out_file, languages=["c"])
+        content = out_file.read_text(encoding="utf-8")
+        self.assertIn("id: c-naming-button", content)
+        self.assertNotIn("id: rust-naming-button", content)
+        self.assertNotIn("id: python-naming-button", content)
 
 
 if __name__ == "__main__":

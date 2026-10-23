@@ -130,3 +130,71 @@ def compile_ruff(
     if not ruff_target.exists():
         content = default_ruff_file.read_text(encoding="utf-8")
         ruff_target.write_text(content, encoding="utf-8")
+
+
+LANGUAGE_CONFIGS: dict[str, dict[str, list[str]]] = {
+    "c": {
+        "call_kinds": ["call_expression", "preproc_include"],
+    },
+    "rust": {
+        "call_kinds": ["call_expression", "macro_invocation", "use_declaration"],
+    },
+    "python": {
+        "call_kinds": ["call", "import_statement", "import_from_statement"],
+    },
+}
+
+
+def compile_ast_grep_rules(
+    base_file: Path,
+    override_file: Path | None,
+    output_file: Path,
+    languages: list[str] | tuple[str, ...] | None = None,
+) -> None:
+    """Compile abbreviations.base.toml + optional abbreviations.override.toml -> naming.yml."""
+    base_content = base_file.read_text(encoding="utf-8")
+    raw_abbrs = _parse_toml_key_values(base_content)
+    abbr_map: dict[str, str] = {
+        k.strip(): v.strip().strip("\"'") for k, v in raw_abbrs.items()
+    }
+
+    if override_file is not None and override_file.exists():
+        override_content = override_file.read_text(encoding="utf-8")
+        raw_overrides = _parse_toml_key_values(override_content)
+        for k, v in raw_overrides.items():
+            val = v.strip().strip("\"'")
+            if not val or val.lower() in ("false", "disabled", "none", "null"):
+                abbr_map.pop(k.strip(), None)
+            else:
+                abbr_map[k.strip()] = val
+
+    target_langs = (
+        [lang for lang in languages if lang in LANGUAGE_CONFIGS]
+        if languages
+        else list(LANGUAGE_CONFIGS.keys())
+    )
+
+    docs: list[str] = []
+    for lang in target_langs:
+        call_kinds = LANGUAGE_CONFIGS[lang]["call_kinds"]
+        call_kind_lines = "\n".join(f"            - kind: {ck}" for ck in call_kinds)
+        for full, abbr in sorted(abbr_map.items()):
+            rule_yaml = f"""id: {lang}-naming-{full}
+language: {lang}
+severity: warning
+message: "标识符 '$NAME' 包含 '{full}'，建议缩写为 '{abbr}'"
+rule:
+  all:
+    - kind: identifier
+      pattern: $NAME
+    - regex: "(?i)({full})"
+    - not:
+        inside:
+          any:
+{call_kind_lines}
+          stopBy: end"""
+            docs.append(rule_yaml)
+
+    output_file.parent.mkdir(parents=True, exist_ok=True)
+    output_file.write_text("\n---\n".join(docs) + "\n", encoding="utf-8")
+

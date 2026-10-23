@@ -30,10 +30,10 @@ coding-standard/
 │       └── python.md                  # Python 规范 (3.10+ / 现代 PEP 8)
 │
 ├── profiles/                          # 语言专属配置模版源文件
-│   ├── common/                        # 通用配置 (.editorconfig, sgconfig.yml)
-│   ├── c/                             # C 语言配置 (.clang-format.base, c-naming.yml)
-│   ├── rust/                          # Rust 配置 (rustfmt.base.toml, rust-naming.yml)
-│   └── python/                        # Python 配置 (ruff.base.toml, ruff.toml, python-naming.yml)
+│   ├── common/                        # 通用配置 (.editorconfig, sgconfig.yml, abbreviations.base.toml)
+│   ├── c/                             # C 语言配置 (.clang-format.base)
+│   ├── rust/                          # Rust 配置 (rustfmt.base.toml)
+│   └── python/                        # Python 配置 (ruff.base.toml, ruff.toml)
 │
 ├── templates/                         # 模板与外部集成示例
 │   ├── git-hooks/                     # Git pre-commit 钩子示例
@@ -106,10 +106,10 @@ sha256 = "49a15bc2..."
 is_base = false
 
 [[files]]
-path = ".ast-grep-rules/c-naming.yml"
-profile = "c"
+path = ".ast-grep-rules/abbreviations.base.toml"
+profile = "common"
 sha256 = "28df109a..."
-is_base = false
+is_base = true
 
 [[files]]
 path = ".clang-format.base"
@@ -222,7 +222,9 @@ chmod +x ../my_project/.git/hooks/pre-commit
   ```bash
   ast-grep scan --interactive
   ```
-- **规则扩展**: 各语言对应的语法规则托管在 `.ast-grep-rules/` 下, 项目如需追加私有规则, 可直接在该目录下新增 YAML 规则文件.
+- **规则扩展与定制**: 
+  - 缩写词典由 `common` 统一维护在 `abbreviations.base.toml` 单一源头中，由脚本自动编译生成各语言对应的 `.ast-grep-rules/naming.yml`。
+  - 项目若有领域专属缩写需求，可在项目本地的 `.ast-grep-rules/abbreviations.override.toml` 中追加或覆盖，运行 `sync.py` 即可自动重新编译生效。
 
 ---
 
