@@ -134,13 +134,16 @@ def compile_ruff(
 
 LANGUAGE_CONFIGS: dict[str, dict[str, list[str]]] = {
     "c": {
-        "call_kinds": ["call_expression", "preproc_include"],
+        "exclude_kinds": ["preproc_include"],
+        "exclude_patterns": ["^(__builtin_)"],
     },
     "rust": {
-        "call_kinds": ["call_expression", "macro_invocation", "use_declaration"],
+        "exclude_kinds": ["use_declaration"],
+        "exclude_patterns": [],
     },
     "python": {
-        "call_kinds": ["call", "import_statement", "import_from_statement"],
+        "exclude_kinds": ["import_statement", "import_from_statement"],
+        "exclude_patterns": [],
     },
 }
 
@@ -176,12 +179,25 @@ def compile_ast_grep_rules(
 
     docs: list[str] = []
     for lang in target_langs:
-        call_kinds = LANGUAGE_CONFIGS[lang]["call_kinds"]
-        call_kind_lines = "\n".join(f"            - kind: {ck}" for ck in call_kinds)
+        cfg = LANGUAGE_CONFIGS[lang]
+        exclude_kinds = cfg.get("exclude_kinds", [])
+        exclude_patterns = cfg.get("exclude_patterns", [])
+
+        exclude_kind_block = ""
+        if exclude_kinds:
+            kind_lines = "\n".join(f"            - kind: {k}" for k in exclude_kinds)
+            exclude_kind_block = f"""    - not:
+        inside:
+          any:
+{kind_lines}
+          stopBy: end\n"""
+
+        exclude_pattern_block = ""
+        for pat in exclude_patterns:
+            exclude_pattern_block += f"""    - not:
+        regex: "{pat}"\n"""
+
         for full, abbr in sorted(abbr_map.items()):
-            upper_full, upper_abbr = full.upper(), abbr.upper()
-            title_full, title_abbr = full.capitalize(), abbr.capitalize()
-            lower_full, lower_abbr = full.lower(), abbr.lower()
             rule_yaml = f"""id: {lang}-naming-{full}
 language: {lang}
 severity: warning
@@ -191,34 +207,7 @@ rule:
     - kind: identifier
       pattern: $NAME
     - regex: "(?i)({full})"
-    - not:
-        inside:
-          any:
-{call_kind_lines}
-          stopBy: end
-fix: $NEW_NAME
-transform:
-  STEP1:
-    replace:
-      source: $NAME
-      replace: "{upper_full}"
-      by: "{upper_abbr}"
-  STEP2:
-    replace:
-      source: $STEP1
-      replace: "{title_full}"
-      by: "{title_abbr}"
-  STEP3:
-    replace:
-      source: $STEP2
-      replace: "{lower_full}"
-      by: "{lower_abbr}"
-  NEW_NAME:
-    replace:
-      source: $STEP3
-      replace: "(?i){full}"
-      by: "{lower_abbr}"
-"""
+{exclude_kind_block}{exclude_pattern_block}""".rstrip()
             docs.append(rule_yaml)
 
     output_file.parent.mkdir(parents=True, exist_ok=True)

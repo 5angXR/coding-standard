@@ -214,14 +214,12 @@ chmod +x ../my_project/.git/hooks/pre-commit
   cargo install --locked ast-grep
   # 或通过包管理器: brew install ast-grep / pacman -S ast-grep, 或直接下载 Release 单二进制
   ```
-- **本地扫描自检**:
+- **本地扫描与 CI 门禁**:
   ```bash
   ast-grep scan
   ```
-- **一键交互重构/修复**:
-  ```bash
-  ast-grep scan --interactive
-  ```
+- **如何安全修复 Warning**:
+  - 标识符重命名属于语义级重构，推荐在 IDE（VS Code / CLion / RustRover / PyCharm）中将光标定位在被告警的符号上，按 **`F2`**（或右键 **Rename Symbol / 重命名符号**）重命名为建议的缩写。IDE 底层的 Language Server（clangd / rust-analyzer / pyright）会自动联动更新头文件声明及所有跨文件引用，确保编译 100% 通过。
 - **规则扩展与定制**: 
   - 缩写词典由 `common` 统一维护在 `abbreviations.base.toml` 单一源头中，由脚本自动编译生成各语言对应的 `.ast-grep-rules/naming.yml`。
   - 项目若有领域专属缩写需求，可在项目本地的 `.ast-grep-rules/abbreviations.override.toml` 中追加或覆盖，运行 `sync.py` 即可自动重新编译生效。

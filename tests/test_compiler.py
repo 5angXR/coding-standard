@@ -121,19 +121,20 @@ class TestCompiler(unittest.TestCase):
         self.assertNotIn("id: rust-naming-button", content)
         self.assertNotIn("id: python-naming-button", content)
 
-    def test_compile_ast_grep_rules_case_preserving_transform(self):
+    def test_compile_ast_grep_rules_warning_only_structure(self):
         base_file = self.work_dir / "abbreviations.base.toml"
         base_file.write_text('button = "btn"\n', encoding="utf-8")
         out_file = self.work_dir / ".ast-grep-rules" / "naming.yml"
 
         compile_ast_grep_rules(base_file, None, out_file, languages=["c"])
         content = out_file.read_text(encoding="utf-8")
-        self.assertIn('replace: "BUTTON"', content)
-        self.assertIn('by: "BTN"', content)
-        self.assertIn('replace: "Button"', content)
-        self.assertIn('by: "Btn"', content)
-        self.assertIn('replace: "button"', content)
-        self.assertIn('by: "btn"', content)
+        self.assertIn("severity: warning", content)
+        self.assertIn("建议缩写为 'btn'", content)
+        self.assertIn("preproc_include", content)
+        self.assertIn("__builtin_", content)
+        # Verify no blind fix or transform
+        self.assertNotIn("fix:", content)
+        self.assertNotIn("transform:", content)
 
 
 if __name__ == "__main__":
