@@ -218,11 +218,9 @@ chmod +x ../my_project/.git/hooks/pre-commit
   ```bash
   ast-grep scan
   ```
-- **如何安全修复 Warning**:
-  - 标识符重命名属于语义级重构，推荐在 IDE（VS Code / CLion / RustRover / PyCharm）中将光标定位在被告警的符号上，按 **`F2`**（或右键 **Rename Symbol / 重命名符号**）重命名为建议的缩写。IDE 底层的 Language Server（clangd / rust-analyzer / pyright）会自动联动更新头文件声明及所有跨文件引用，确保编译 100% 通过。
-- **规则扩展与定制**: 
-  - 缩写词典由 `common` 统一维护在 `abbreviations.base.toml` 单一源头中，由脚本自动编译生成各语言对应的 `.ast-grep-rules/naming.yml`。
-  - 项目若有领域专属缩写需求，可在项目本地的 `.ast-grep-rules/abbreviations.override.toml` 中追加或覆盖，运行 `sync.py` 即可自动重新编译生效。
+- **告警忽略与项目定制**:
+  - **行内压制**：若因对接外部固件/第三方库等原因无法修改，可在告警行上一行添加注释忽略：`// ast-grep-ignore` (C/Rust) 或 `# ast-grep-ignore` (Python)。
+  - **规则词典定制**：缩写词典由 `common` 统一维护在 `abbreviations.base.toml` 中；项目若有领域专属缩写或需豁免特定词汇，可在项目本地 `.ast-grep-rules/abbreviations.override.toml` 中覆盖（如 `button = ""` 豁免该词），运行 `sync.py` 自动重新编译生效。
 
 ---
 
