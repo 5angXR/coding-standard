@@ -192,7 +192,15 @@ rule:
         inside:
           any:
 {call_kind_lines}
-          stopBy: end"""
+          stopBy: end
+fix: $NEW_NAME
+transform:
+  NEW_NAME:
+    replace:
+      source: $NAME
+      replace: "(?i){full}"
+      by: "{abbr}"
+"""
             docs.append(rule_yaml)
 
     output_file.parent.mkdir(parents=True, exist_ok=True)
