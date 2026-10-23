@@ -1,0 +1,13 @@
+id: rust-naming-abbreviation
+language: rust
+severity: warning
+message: "标识符建议采用标准规范缩写 (如 button->btn, count->cnt, event->evt, buffer->buf, length->len, config->cfg, message->msg, context->ctx, device->dev)"
+rule:
+  all:
+    - kind: identifier
+    - regex: '(?i)(button|count|event|buffer|length|config|message|context|device)'
+    - not:
+        inside:
+          kind: call_expression
+          stopBy: end
+

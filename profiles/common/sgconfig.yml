@@ -1,0 +1,4 @@
+# ast-grep configuration for coding-standard
+ruleDirs:
+  - .ast-grep-rules
+

@@ -10,12 +10,3 @@ check-coding-standard:
   rules:
     - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
     - if: '$CI_COMMIT_BRANCH == "main"'
-
-check-typos:
-  stage: test
-  image: ghcr.io/crate-ci/typos:latest
-  script:
-    - typos
-  rules:
-    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
-    - if: '$CI_COMMIT_BRANCH == "main"'

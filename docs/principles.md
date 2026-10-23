@@ -19,7 +19,7 @@
 | **GEN-NAM-01** | 标识符命名必须准确表达其业务含义或技术职责, 禁止使用单字母(循环计数 `i`, `j` 除外)或无意义拼音缩写. | **MUST** | 全语言 | Code Review |
 | **GEN-NAM-02** | 遵循所在语言的命名习惯(C/Rust 函数与变量使用 `snake_case`, 类型与结构体使用 `PascalCase`; Python 类使用 `PascalCase`, 函数变量使用 `snake_case`; 常量使用 `UPPER_SNAKE_CASE`). | **MUST** | 全语言 | Linter / Review |
 | **GEN-NAM-03** | 布尔类型变量与函数应具有明确的是非语义, 推荐以 `is_`, `has_`, `can_`, `should_` 开头. | **SHOULD** | 全语言 | Code Review |
-| **GEN-NAM-04** | 遇到常见可缩写词汇时, 函数与变量命名应采用统一的标准缩写(如 `button` -> `btn`, `count` -> `cnt`, `event` -> `evt`, `buffer` -> `buf`, `length` -> `len`, `config` -> `cfg`, `message` -> `msg`, `context` -> `ctx`, `device` -> `dev`, `number` -> `num`, `pointer` -> `ptr`, `string` -> `str`, `value` -> `val`, `initialize` -> `init`, `calculate` -> `calc`, `arguments` -> `args` 等), 禁止自创生僻缩写或同一词汇在同一模块中全拼与缩写混用. | **SHOULD** | 全语言 | typos / Review |
+| **GEN-NAM-04** | 遇到常见可缩写词汇时, 函数与变量命名应采用统一的标准缩写(如 `button` -> `btn`, `count` -> `cnt`, `event` -> `evt`, `buffer` -> `buf`, `length` -> `len`, `config` -> `cfg`, `message` -> `msg`, `context` -> `ctx`, `device` -> `dev`, `number` -> `num`, `pointer` -> `ptr`, `string` -> `str`, `value` -> `val`, `initialize` -> `init`, `calculate` -> `calc`, `arguments` -> `args` 等), 禁止自创生僻缩写或同一词汇在同一模块中全拼与缩写混用. | **SHOULD** | 全语言 | ast-grep / Review |
 
 ### 2.2 复杂度与函数职责
 

@@ -5,7 +5,7 @@
 ## 1. 核心设计原则
 
 1. **通用原则统一, 语言规范细分**: 通用工程原则(命名, 复杂度, 防御性编程, 资源所有权)全语言一致; 语法与范式按语言特化.
-2. **复用成熟工具**: 基于行业标准工具(`clang-format`,`rustfmt`,`clippy`,`ruff`,`typos`), 不重复造轮子.
+2. **复用成熟工具**: 基于行业标准工具(`clang-format`,`rustfmt`,`clippy`,`ruff`,`ast-grep`), 不重复造轮子.
 3. **单源维护与版本化**: 规范源文件在本仓库单源维护, 接入项目通过 `.coding-standard.toml` 锁定版本与文件哈希.
 4. **分层覆盖与无冲突更新**: 核心配置托管在 `.base` 文件中, 项目特异性定制保留在 `.override` 文件中, 上游版本升级时自动合并重编, 彻底避免"定制导致无法升级"的死局.
 5. **安全与零第三方依赖**: 全套管理脚本(`install.py`, `sync.py`, `check.py`)采用纯 Python 3.10+ 标准库实现, 防范路径越界, 严禁静默覆盖用户修改.
@@ -30,10 +30,10 @@ coding-standard/
 │       └── python.md                  # Python 规范 (3.10+ / 现代 PEP 8)
 │
 ├── profiles/                          # 语言专属配置模版源文件
-│   ├── common/                        # 通用配置 (.editorconfig, _typos.toml)
-│   ├── c/                             # C 语言配置 (.clang-format.base)
-│   ├── rust/                          # Rust 配置 (rustfmt.base.toml)
-│   └── python/                        # Python 配置 (ruff.base.toml, ruff.toml)
+│   ├── common/                        # 通用配置 (.editorconfig, sgconfig.yml)
+│   ├── c/                             # C 语言配置 (.clang-format.base, c-naming.yml)
+│   ├── rust/                          # Rust 配置 (rustfmt.base.toml, rust-naming.yml)
+│   └── python/                        # Python 配置 (ruff.base.toml, ruff.toml, python-naming.yml)
 │
 ├── templates/                         # 模板与外部集成示例
 │   ├── git-hooks/                     # Git pre-commit 钩子示例
@@ -100,9 +100,15 @@ sha256 = "17e57c6b..."
 is_base = false
 
 [[files]]
-path = "_typos.toml"
+path = "sgconfig.yml"
 profile = "common"
-sha256 = "8f3b92a1..."
+sha256 = "49a15bc2..."
+is_base = false
+
+[[files]]
+path = ".ast-grep-rules/c-naming.yml"
+profile = "c"
+sha256 = "28df109a..."
 is_base = false
 
 [[files]]
@@ -195,28 +201,28 @@ chmod +x ../my_project/.git/hooks/pre-commit
     git clone --depth 1 https://gitee.com/wangxuran/coding-standard.git /tmp/coding-standard
     python3 /tmp/coding-standard/scripts/check.py --target .
 
-- name: Check Abbreviations & Spelling
-  uses: crate-ci/typos@master
+- name: Run ast-grep AST Rule Scan
+  uses: ast-grep/action@v1
 ```
 
-### 5.3 统一词汇与命名缩写检查 (typos)
+### 5.3 跨语言 AST 命名与代码规约检查 (ast-grep)
 
-本规范通过 `profiles/common/_typos.toml` 自动化卡控常见词汇缩写规则(如 `button` -> `btn`, `count` -> `cnt`, `event` -> `evt`):
+本规范采用基于 Tree-sitter 的高性能 AST 工具 `ast-grep` 进行代码标识符缩写检查(如 `button` -> `btn`, `count` -> `cnt`, `event` -> `evt`):
 
 - **安装工具**:
   ```bash
-  cargo install typos-cli
-  # 或通过包管理器: brew install typos / pacman -S typos, 或直接下载 Release 单二进制
+  cargo install --locked ast-grep
+  # 或通过包管理器: brew install ast-grep / pacman -S ast-grep, 或直接下载 Release 单二进制
   ```
 - **本地扫描自检**:
   ```bash
-  typos
+  ast-grep scan
   ```
-- **一键自动修复**:
+- **一键交互重构/修复**:
   ```bash
-  typos -w
+  ast-grep scan --interactive
   ```
-- **规则微调**: 若项目需要增加特定词汇豁免或追加私有缩写, 可直接在项目根目录的 `_typos.toml` 中配置 `[default.extend-words]`.
+- **规则扩展**: 各语言对应的语法规则托管在 `.ast-grep-rules/` 下, 项目如需追加私有规则, 可直接在该目录下新增 YAML 规则文件.
 
 ---
 

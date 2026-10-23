@@ -35,8 +35,8 @@ PROFILE_SPECS: dict[str, list[ProfileFileSpec]] = {
             is_base=False,
         ),
         ProfileFileSpec(
-            src_rel_path="_typos.toml",
-            target_rel_path="_typos.toml",
+            src_rel_path="sgconfig.yml",
+            target_rel_path="sgconfig.yml",
             is_base=False,
         ),
     ],
@@ -48,6 +48,11 @@ PROFILE_SPECS: dict[str, list[ProfileFileSpec]] = {
             compiled_filename=".clang-format",
             override_filename=".clang-format.override",
         ),
+        ProfileFileSpec(
+            src_rel_path="c-naming.yml",
+            target_rel_path=".ast-grep-rules/c-naming.yml",
+            is_base=False,
+        ),
     ],
     "rust": [
         ProfileFileSpec(
@@ -56,6 +61,11 @@ PROFILE_SPECS: dict[str, list[ProfileFileSpec]] = {
             is_base=True,
             compiled_filename="rustfmt.toml",
             override_filename="rustfmt.override.toml",
+        ),
+        ProfileFileSpec(
+            src_rel_path="rust-naming.yml",
+            target_rel_path=".ast-grep-rules/rust-naming.yml",
+            is_base=False,
         ),
     ],
     "python": [
@@ -68,6 +78,11 @@ PROFILE_SPECS: dict[str, list[ProfileFileSpec]] = {
         ProfileFileSpec(
             src_rel_path="ruff.toml",
             target_rel_path="ruff.toml",
+            is_base=False,
+        ),
+        ProfileFileSpec(
+            src_rel_path="python-naming.yml",
+            target_rel_path=".ast-grep-rules/python-naming.yml",
             is_base=False,
         ),
     ],

@@ -28,13 +28,18 @@ class TestProfiles(unittest.TestCase):
     def test_get_profile_files(self):
         c_files = get_profile_files("c")
         self.assertTrue(any(f.src_rel_path == ".clang-format.base" for f in c_files))
+        self.assertTrue(any(f.src_rel_path == "c-naming.yml" for f in c_files))
 
         rust_files = get_profile_files("rust")
         self.assertTrue(any(f.src_rel_path == "rustfmt.base.toml" for f in rust_files))
+        self.assertTrue(any(f.src_rel_path == "rust-naming.yml" for f in rust_files))
+
+        python_files = get_profile_files("python")
+        self.assertTrue(any(f.src_rel_path == "python-naming.yml" for f in python_files))
 
         common_files = get_profile_files("common")
         self.assertTrue(any(f.src_rel_path == ".editorconfig" for f in common_files))
-        self.assertTrue(any(f.src_rel_path == "_typos.toml" for f in common_files))
+        self.assertTrue(any(f.src_rel_path == "sgconfig.yml" for f in common_files))
 
 
 if __name__ == "__main__":

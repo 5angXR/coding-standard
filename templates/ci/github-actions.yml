@@ -29,8 +29,8 @@ jobs:
         run: |
           python3 .coding-standard-repo/scripts/check.py --target .
 
-      - name: Check Abbreviations & Spelling (typos)
-        uses: crate-ci/typos@master
+      - name: Run ast-grep AST Rule Scan
+        uses: ast-grep/action@v1
 
   # Language specific linters can be run as separate jobs:
   # - Clang-Format check: clang-format --dry-run --Werror src/*.c

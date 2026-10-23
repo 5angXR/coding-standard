@@ -25,10 +25,10 @@ print('Coding standard manifest present: OK')
 "
 fi
 
-# Verify spelling & naming abbreviations using typos if available
-if command -v typos >/dev/null 2>&1; then
-    echo "[coding-standard] Checking abbreviations and spelling with typos..."
-    typos
+# Run ast-grep scan if installed and sgconfig.yml exists
+if command -v ast-grep >/dev/null 2>&1 && [ -f "${REPO_ROOT}/sgconfig.yml" ]; then
+    echo "[coding-standard] Scanning AST naming rules with ast-grep..."
+    ast-grep scan
 fi
 
 exit 0
