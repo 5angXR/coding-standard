@@ -179,6 +179,9 @@ def compile_ast_grep_rules(
         call_kinds = LANGUAGE_CONFIGS[lang]["call_kinds"]
         call_kind_lines = "\n".join(f"            - kind: {ck}" for ck in call_kinds)
         for full, abbr in sorted(abbr_map.items()):
+            upper_full, upper_abbr = full.upper(), abbr.upper()
+            title_full, title_abbr = full.capitalize(), abbr.capitalize()
+            lower_full, lower_abbr = full.lower(), abbr.lower()
             rule_yaml = f"""id: {lang}-naming-{full}
 language: {lang}
 severity: warning
@@ -195,11 +198,26 @@ rule:
           stopBy: end
 fix: $NEW_NAME
 transform:
-  NEW_NAME:
+  STEP1:
     replace:
       source: $NAME
+      replace: "{upper_full}"
+      by: "{upper_abbr}"
+  STEP2:
+    replace:
+      source: $STEP1
+      replace: "{title_full}"
+      by: "{title_abbr}"
+  STEP3:
+    replace:
+      source: $STEP2
+      replace: "{lower_full}"
+      by: "{lower_abbr}"
+  NEW_NAME:
+    replace:
+      source: $STEP3
       replace: "(?i){full}"
-      by: "{abbr}"
+      by: "{lower_abbr}"
 """
             docs.append(rule_yaml)
 
