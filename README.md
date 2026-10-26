@@ -1,5 +1,7 @@
 # Coding Standard (统一跨语言代码规范与工程基线)
 
+[![CI](https://github.com/5angXR/coding-standard/actions/workflows/ci.yml/badge.svg)](https://github.com/5angXR/coding-standard/actions/workflows/ci.yml)
+
 这是一个独立, 可复用, 跨语言(C, Rust, Python 等)的代码规范与自动化配置仓库.
 
 ## 1. 核心设计原则
@@ -194,11 +196,11 @@ chmod +x ../my_project/.git/hooks/pre-commit
 
 ### 5.2 GitHub Actions 集成
 
-在项目的 `.github/workflows/ci.yml` 中添加检查步骤:
+在项目的 `.github/workflows/ci.yml` 中添加检查步骤（或直接复用 `templates/ci/github-actions.yml`）:
 ```yaml
 - name: Verify Coding Standard
   run: |
-    git clone --depth 1 https://gitee.com/wangxuran/coding-standard.git /tmp/coding-standard
+    git clone --depth 1 https://github.com/5angXR/coding-standard.git /tmp/coding-standard
     python3 /tmp/coding-standard/scripts/check.py --target .
 
 - name: Run ast-grep AST Rule Scan
