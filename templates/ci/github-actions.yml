@@ -17,7 +17,7 @@ jobs:
       - name: Checkout Coding Standard Repo
         uses: actions/checkout@v4
         with:
-          repository: 'wangxuran/coding-standard'
+          repository: '5angXR/coding-standard'
           path: '.coding-standard-repo'
 
       - name: Set up Python
