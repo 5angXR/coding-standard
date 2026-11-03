@@ -27,3 +27,16 @@ jobs:
         run: |
           python3 -m unittest discover tests
 
+  lint-and-format:
+    name: Lint & Punctuation Check
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Verify Chinese Punctuation (punct-converter)
+        run: |
+          cargo install punct-converter --locked
+          punct-converter -r .
+          git diff --exit-code || (echo "Found unconverted Chinese punctuation. Please run 'punct-converter -r .' locally." && exit 1)
+

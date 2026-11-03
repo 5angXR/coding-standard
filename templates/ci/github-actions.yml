@@ -32,6 +32,12 @@ jobs:
       - name: Run ast-grep AST Rule Scan
         uses: ast-grep/action@v1
 
+      - name: Verify Chinese Punctuation (punct-converter)
+        run: |
+          cargo install punct-converter --locked
+          punct-converter -r .
+          git diff --exit-code || (echo "Found unconverted Chinese punctuation. Please run 'punct-converter -r .' locally." && exit 1)
+
   # Language specific linters can be run as separate jobs:
   # - Clang-Format check: clang-format --dry-run --Werror src/*.c
   # - Rustfmt / Clippy: cargo fmt --check && cargo clippy -- -D warnings

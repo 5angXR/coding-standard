@@ -196,7 +196,7 @@ chmod +x ../my_project/.git/hooks/pre-commit
 
 ### 5.2 GitHub Actions 集成
 
-在项目的 `.github/workflows/ci.yml` 中添加检查步骤（或直接复用 `templates/ci/github-actions.yml`）:
+在项目的 `.github/workflows/ci.yml` 中添加检查步骤(或直接复用 `templates/ci/github-actions.yml`):
 ```yaml
 - name: Verify Coding Standard
   run: |
@@ -221,8 +221,25 @@ chmod +x ../my_project/.git/hooks/pre-commit
   ast-grep scan
   ```
 - **告警忽略与项目定制**:
-  - **行内压制**：若因对接外部固件/第三方库等原因无法修改，可在告警行上一行添加注释忽略：`// ast-grep-ignore` (C/Rust) 或 `# ast-grep-ignore` (Python)。
-  - **规则词典定制**：缩写词典由 `common` 统一维护在 `abbreviations.base.toml` 中；项目若有领域专属缩写或需豁免特定词汇，可在项目本地 `.ast-grep-rules/abbreviations.override.toml` 中覆盖（如 `button = ""` 豁免该词），运行 `sync.py` 自动重新编译生效。
+  - **行内压制**: 若因对接外部固件/第三方库等原因无法修改, 可在告警行上一行添加注释忽略:`// ast-grep-ignore` (C/Rust) 或 `# ast-grep-ignore` (Python).
+  - **规则词典定制**: 缩写词典由 `common` 统一维护在 `abbreviations.base.toml` 中; 项目若有领域专属缩写或需豁免特定词汇, 可在项目本地 `.ast-grep-rules/abbreviations.override.toml` 中覆盖(如 `button = ""` 豁免该词), 运行 `sync.py` 自动重新编译生效.
+
+### 5.4 中文标点转英文标点规约与自动化 (punct-converter)
+
+为保证代码注释与技术文档在中英文混排时的规范整洁, 避免中文标点导致终端乱码或 Markdown 渲染冲突, 本规范要求统一采用**英文标点符号**(断句标点后补空格).
+
+- **安装工具**:
+  ```bash
+  cargo install --locked punct-converter
+  ```
+- **本地转换与一键修复**:
+  ```bash
+  punct-converter -r .
+  ```
+- **仅预览不写入 (Dry-run)**:
+  ```bash
+  punct-converter --dry-run -r .
+  ```
 
 ---
 

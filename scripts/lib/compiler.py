@@ -201,7 +201,7 @@ def compile_ast_grep_rules(
             rule_yaml = f"""id: {lang}-naming-{full}
 language: {lang}
 severity: warning
-message: "标识符 '$NAME' 包含 '{full}'，建议缩写为 '{abbr}'"
+message: "标识符 '$NAME' 包含 '{full}', 建议缩写为 '{abbr}'"
 rule:
   all:
     - kind: identifier

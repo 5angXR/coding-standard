@@ -31,4 +31,10 @@ if command -v ast-grep >/dev/null 2>&1 && [ -f "${REPO_ROOT}/sgconfig.yml" ]; th
     ast-grep scan
 fi
 
+# Run punct-converter to convert Chinese punctuation to English punctuation if installed
+if command -v punct-converter >/dev/null 2>&1; then
+    echo "[coding-standard] Converting Chinese punctuation with punct-converter..."
+    punct-converter -r "${REPO_ROOT}"
+fi
+
 exit 0
